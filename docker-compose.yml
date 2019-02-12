@@ -1,0 +1,46 @@
+version: '2'
+services:
+  api:
+    build:
+      context: ./api
+      # dockerfile: ./Dockerfile_dashboard
+    image: closest_word_api
+    container_name: closest_word_api_service
+    environment:
+      LOG_LEVEL: "INFO"
+      LOG: "CONSOLE"
+      FLASK_HOST: "0.0.0.0"
+      FLASK_PORT: 5050
+      FLASK_DEBUGGING: "False"
+    networks:
+      - closest_word_net
+    ports:
+      - 5050:5050
+
+  frontend:
+    build:
+      context: ./frontend
+    image: closest_word_frontend
+    container_name: closest_word_frontend_service
+    environment:
+      LOG_LEVEL: "INFO"
+      LOG: "CONSOLE"
+      FLASK_HOST: "0.0.0.0"
+      FLASK_PORT: 80
+      FLASK_DEBUGGING: "True"
+      # API_URL: "http://127.0.0.1:5050/ClosestWord"
+      API_URL: "http://api:5050/ClosestWord"
+    depends_on:
+      - api
+    links:
+      - api
+    ports:
+      - 80:80
+    networks:
+      - closest_word_net
+
+networks:
+  closest_word_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv4: "true"

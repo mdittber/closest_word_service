@@ -1,0 +1,85 @@
+{% extends "bootstrap/base.html" %}
+
+
+{% block title %}Closest Word Seach{% endblock %}
+
+
+{% block content %}
+<!--
+      Menu
+-->
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Closest Word</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Search</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!--
+      Form
+-->
+<div class="container col-md-4 col-md-offset-4">
+
+  <form class="form-group" role="search" method="POST" action="/">
+    <div class="form-group row">
+      <label for="sel1">Search for similar words:</label>
+      <input type="text" name="word" class="form-control" placeholder="Search" required>
+    </div>
+
+    <div class="form-group row">
+      <label for="sel1">Number of similar words to be returned:</label>
+      <select class="form-control" name="N" id="sel1">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>25</option>
+        <option>50</option>
+        <option>100</option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+
+  </form>
+
+
+<!--
+      Answer
+-->
+  {% if words %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          {% if word %}
+            <th>Similar words to {{ word }}:</th>
+          {% else %}
+            <th>Similar words:</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in words %}
+        <tr>
+          <td> {{ item }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+  <div class="alert alert-warning" role="alert">
+  Word not in dictionary.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
